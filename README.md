@@ -22,6 +22,8 @@ Issues
 Rationale
 ---------
 
+One of the percieved issues with Scheme is it's inability to create generic algorithms that take a wide variety of data as arguments
+
 The author makes no claims about the rationality of this draft.
 
 Specification
@@ -62,6 +64,8 @@ If a procedure of the same name already exists, all predicates that have
 been defined as subsuming the previous definition of name are defined
 as subsuming the new definition as well.
 
+### Methods
+
 ### Generic procedures
 
 `make-generic <symbol> [<hierarchy>]`
@@ -77,13 +81,6 @@ Returns `#t` if the object is a generic function, and `#f` otherwise.
 `generic-has-specialization? <generic> <predicate>...`
 
 `generic-add-method! <generic> <predicates>`
-
-
-
-
-
-
-
 
 Example
 -------
