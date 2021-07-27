@@ -22,7 +22,7 @@ Issues
 Rationale
 ---------
 
-One of the percieved issues with Scheme is it's inability to create generic algorithms that take a wide variety of data as arguments
+One of the percieved issues with Scheme is it's inability to create generic algorithms that take a wide variety of data as arguments: for example, conceptually `list-ref`, `vector-ref`, and `string-ref` are the same concept, that of looking up a value in a datum by index.
 
 The author makes no claims about the rationality of this draft.
 
