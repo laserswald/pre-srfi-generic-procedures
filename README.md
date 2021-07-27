@@ -17,9 +17,12 @@ Issues
 
 - Should a global parameter for a default hierarchy exist?
 - What should we actually call the parent-child relation?
+- When a predicate function is re-defined, should we re-define all relations as well?
 
 Rationale
 ---------
+
+The author makes no claims about the rationality of this draft.
 
 Specification
 -------------
@@ -76,56 +79,8 @@ Returns `#t` if the object is a generic function, and `#f` otherwise.
 `generic-add-method! <generic> <predicates>`
 
 
-## Interactions with other SRFIs
 
-### Pre-established predicate specializations
 
-- `anything?`
-	- `boolean?`
-	- `symbol?`
-	- `string?`
-	- `number?`
-		- `complex?`
-			- `real?`
-				- `rational?`
-					- `integer?`
-	- `vector?`
-	- `bytevector?`
-	- `eof-object?`
-	- `procedure?`
-	- `list?`
-		- `pair?`
-		- `null?`
-
-#### Establishing relations with existing predicates easily
-
-#### Defining and redefining predicates
-
-When a predicate function is re-defined, all sub-relations must be established as well.
-How should this be done?
-
-Has to be done with syntax to make this easy
-
-- Get current supertypes of a predicate
-- get current subtypes of a predicate
-
-```scheme
-(define-generalization (sequence? object?)
-  (list? obj)
-  (vector? obj)))
-```
-->
-```scheme
-(begin 
-  (define specializations (predicate-specializations sequence?)) 
-  (define sequence?
-    (lambda (obj)
-      (or (list? obj)
-          (vector? obj))))
-  (for-each (lambda (specialization)
-              (predicate-specializes! specialization sequence?))
-            specializations))
-```
 
 
 
