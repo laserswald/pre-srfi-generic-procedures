@@ -34,7 +34,7 @@ Ensure that _pred_ is registered to specialize _subpred_. It is an error if _pre
 
 Returns `#t` if _pred_ subsumes _other_, and `#f` otherwise.
 
-`(<pred> -> list?)`
+`subsumptions <pred> -> list?`
 
 Returns a list of all predicates that have been registered to be subsumed in _pred_. If no subsumptions of _pred_ are registered, the empty list is returned.
 
