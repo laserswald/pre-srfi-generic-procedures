@@ -10,12 +10,15 @@ Ben Davenport-Ray
 Abstract
 --------
 
-This SRFI defines specifies procedures which change their behavior using a predicate. This allows ad-hoc polymorphism based on type, a specific value, range of values, or any other constraint that can be expressed using a predicate. In order to support polymorphism 
+This SRFI defines specifies procedures which change their behavior depending on the values passed into them. The values that are dispatched on are distinguished using predicates. This allows for ad-hoc polymorphism based on type, a specific value, range of values, or any other constraint that can be expressed using a predicate.
+
+In ord
 
 Rationale
 ---------
 
-
+Specification
+-------------
 
 Predicates and specialization
 -----------------------------
