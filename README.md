@@ -10,7 +10,7 @@ Ben Davenport-Ray
 Abstract
 --------
 
-This SRFI defines mechanisms for creating procedures which change their behavior depending on the values passed into them depending on one or more predicates. This allows for ad-hoc polymorphism based on type, a specific value, range of values, or any other constraint that can be expressed using a predicate.
+This SRFI defines mechanisms for creating procedures which change their behavior depending on one or more predicates. This allows for ad-hoc polymorphism based on type, a specific value, range of values, or any other constraint that can be expressed using a predicate.
 
 Issues
 ------
