@@ -20,8 +20,7 @@ Rationale
 Specification
 -------------
 
-Predicates and specialization
------------------------------
+### Predicates and specialization
 
 In order to have a useful ordering for methods, there must be an
 established ordering of predicates which designate types. We say a
@@ -29,7 +28,9 @@ predicate specializes another predicate when methods that are defined on
 the first predicate should be given higher priority than methods defined
 on the second.
 
-`register-predicate! <pred> <parent-pred>`
+### Hierarchies
+
+`register-predicate! <pred> <parent-pred> [<hierarchy>]`
 
 Ensure that _pred_ is registered to specialize _subpred_. It is an error if _pred_ already specializes _subpred_.
 
@@ -111,6 +112,8 @@ Generic procedures
 Define a new generic function with the name _symbol_. 
 
 `generic?`
+
+Returns `#t` if the object is a generic function, and `#f` otherwise.
 
 `generic-specialized-on? <generic> <predicate>...`
 
