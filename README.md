@@ -15,7 +15,8 @@ This SRFI defines mechanisms for creating procedures which change their behavior
 Issues
 ------
 
-
+- Should a global parameter for a default hierarchy exist?
+- What should we actually call the parent-child relation?
 
 Rationale
 ---------
@@ -26,14 +27,17 @@ Specification
 ### Hierarchies
 
 In order to have a useful ordering for methods, there must be an
-established ordering of predicates which designate types, which we will call a _predicate hierarchy_, or just a _hierarchy_ for short. We say a
-predicate specializes another predicate when methods that are defined on
+established ordering of predicates which designate types, which we will call a _predicate hierarchy_, or just a _hierarchy_ for short. 
+
+A hierarchy is a disjoint type.
+
+We say a predicate specializes another predicate when methods that are defined on
 the first predicate should be given higher priority than methods defined
 on the second.
 
-A hierarchy is a disjoint type, as if it were made by 
+`make-predicate-hierarchy`
 
-`register-predicate! <pred> <parent-pred> [<hierarchy>]`
+`derive! <pred> <parent-pred> [<hierarchy>]`
 
 Ensure that _pred_ is registered to specialize _subpred_. It is an error if _pred_ already specializes _subpred_.
 
@@ -57,9 +61,9 @@ as subsuming the new definition as well.
 
 ### Generic procedures
 
-`make-generic <symbol>`
+`make-generic <symbol> [<hierarchy>]`
 
-Define a new generic function with the name _symbol_. 
+Define a new generic function with the name _symbol_. If no hierarchy is given, then the return value of `(current-hierarchy)` is used. 
 
 `generic?`
 
