@@ -10,9 +10,12 @@ Ben Davenport-Ray
 Abstract
 --------
 
-This SRFI defines specifies procedures which change their behavior depending on the values passed into them. The values that are dispatched on are distinguished using predicates. This allows for ad-hoc polymorphism based on type, a specific value, range of values, or any other constraint that can be expressed using a predicate.
+This SRFI defines mechanisms for creating procedures which change their behavior depending on the values passed into them depending on one or more predicates. This allows for ad-hoc polymorphism based on type, a specific value, range of values, or any other constraint that can be expressed using a predicate.
 
-In ord
+Issues
+------
+
+
 
 Rationale
 ---------
@@ -20,15 +23,15 @@ Rationale
 Specification
 -------------
 
-### Predicates and specialization
+### Hierarchies
 
 In order to have a useful ordering for methods, there must be an
-established ordering of predicates which designate types. We say a
+established ordering of predicates which designate types, which we will call a _predicate hierarchy_, or just a _hierarchy_ for short. We say a
 predicate specializes another predicate when methods that are defined on
 the first predicate should be given higher priority than methods defined
 on the second.
 
-### Hierarchies
+A hierarchy is a disjoint type, as if it were made by 
 
 `register-predicate! <pred> <parent-pred> [<hierarchy>]`
 
@@ -52,8 +55,24 @@ If a procedure of the same name already exists, all predicates that have
 been defined as subsuming the previous definition of name are defined
 as subsuming the new definition as well.
 
-Record types and predicates
----------------------------
+### Generic procedures
+
+`make-generic <symbol>`
+
+Define a new generic function with the name _symbol_. 
+
+`generic?`
+
+Returns `#t` if the object is a generic function, and `#f` otherwise.
+
+`generic-specialized-on? <generic> <predicate>...`
+
+`generic-has-specialization? <generic> <predicate>...`
+
+`generic-add-method! <generic> <predicates>`
+
+
+## Interactions with other SRFIs
 
 ### Pre-established predicate specializations
 
@@ -104,22 +123,6 @@ Has to be done with syntax to make this easy
             specializations))
 ```
 
-Generic procedures
-------------------
-
-`make-generic <symbol>`
-
-Define a new generic function with the name _symbol_. 
-
-`generic?`
-
-Returns `#t` if the object is a generic function, and `#f` otherwise.
-
-`generic-specialized-on? <generic> <predicate>...`
-
-`generic-has-specialization? <generic> <predicate>...`
-
-`generic-add-method! <generic> <predicates>`
 
 
 
