@@ -13,7 +13,8 @@ Issues
 ------
 
 - Should a pre-defined default hierarchy exist?
-	- I think yes, and maybe accessible using a seperate import declaration. That way, maybe if the underlying Scheme has 
+	- I think it might be a good idea, if we can agree on it. If not, we don't have to provide it.
+	- Seperate hierarchy instances may help this problem of agreeing on hierarchies. If you don't like a particular hierarchy, you are free to define your own, but you have to do some of the work.
 - What should we actually call the parent-child relation?
 	- Subsumption sounds extra fancy, but it's a bit weird, since for me it sounds like if a predicate subsumes another it replaces it.
 	- Parent or Child is fine, but we don't want to take these concepts for ourselves, right?
@@ -110,6 +111,12 @@ Defines a new generic function with the name and using the given hierarchy.
 ##### `(define-method (name parameters...) body ...)`
 
 Defines a new specialization for the generic function `name`. Each parameter may have a specializer if the 
+
+### Ancillary procedures
+
+##### `(object? . xs) -> boolean?` 
+
+Returns `#t` if an object is a datum. Useful for having a "base" type in a predicate hierarchy.
 
 ## Interaction with other SRFIs
 
