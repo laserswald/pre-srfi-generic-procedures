@@ -40,21 +40,23 @@ We say a predicate specializes another predicate when methods that are defined o
 the first predicate should be given higher priority than methods defined
 on the second.
 
-`make-predicate-hierarchy -> hierarchy?`
+`(make-predicate-hierarchy) -> hierarchy?`
 
 Create a new predicate hierarchy. 
 
-`derive! <pred> <parent-pred> [<hierarchy>]`
+`(derive! <pred> <parent-pred> [<hierarchy>]) -> <undefined>`
 
 Ensure that _pred_ is registered to specialize _subpred_. It is an error if _pred_ already specializes _subpred_.
 
-`specializes? <pred> <other> -> boolean?`
+`(derived? <pred> <other> [<hierarchy>]) -> boolean?`
 
 Returns `#t` if _pred_ subsumes _other_, and `#f` otherwise.
 
-`subsumptions <pred> -> list?`
+`(derivations <pred> [<hierarchy>]) -> list?`
 
 Returns a list of all predicates that have been registered to be subsumed in _pred_. If no subsumptions of _pred_ are registered, the empty list is returned.
+
+#### Syntax
 
 `(define-subsume ((<name> ... <subsumed>) ...args) ...body)`
 
@@ -70,13 +72,17 @@ as subsuming the new definition as well.
 
 ### Generic procedures
 
-`make-generic <symbol> [<hierarchy>]`
+`(make-generic <symbol> [<hierarchy>]) -> generic?`
 
 Define a new generic function with the name _symbol_. If no hierarchy is given, then the return value of `(current-hierarchy)` is used. 
 
-`generic?`
+`(generic? <object>) -> boolean?`
 
 Returns `#t` if the object is a generic function, and `#f` otherwise.
+
+`generic-apply <generic> <list-of-args> -> ...`
+
+Like `apply`, but calls a `generic` instead.
 
 `generic-specialized-on? <generic> <object>...`
 
@@ -84,7 +90,11 @@ Returns `#t` if the generic function has an explicit specialization for the obje
 
 `generic-has-specialization? <generic> <predicate>...`
 
+Returns `#t` if the generic function has an explicit specialization that specializes using the specific predicates, and `#f` otherwise.
+
 `generic-add-method! <generic> <predicates> <body>`
+
+`define-generic (`
 
 Example
 -------
@@ -103,14 +113,19 @@ Example
   (and (generic-accepts? ref      (list obj #f))
        (generic-accepts? set-ref! (list obj #f #f)))
 
-(define-method (elt (coll list?) idx) 
+(define-method (elt (list? l) idx) 
   (list-ref coll idx))
+
 (subsume! sequence? list?)
 
-(define-method (elt (coll vector?) idx)     (vector-ref coll idx))
+(define-method (elt (vector? v) idx) 
+  (vector-ref coll idx))
+
 (subsume! sequence? vector?)
 
-(define-method (elt (coll bytevector?) idx) (bytevector-u8-ref coll idx))
+(define-method (elt (coll bytevector?) idx) 
+  (bytevector-u8-ref coll idx))
+  
 (subsume! sequence? bytevector?)
 
 (define-method (head (seq sequence?)) 
