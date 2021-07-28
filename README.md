@@ -102,7 +102,13 @@ Returns `#t` if the generic function has an explicit specialization that special
 
 #### Syntax
 
-`(define-generic (`
+`(define-generic <name> [<hierarchy>])`
+
+Defines a new generic function with the name and using the given hierarchy. 
+
+`(define-method (name parameters...) body ...)`
+
+Defines a new specialization for the generic function `name`.
 
 Examples
 --------
