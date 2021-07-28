@@ -2,10 +2,7 @@
 Predicate-based generic procedures
 ==================================
 
-Author
-------
-
-Ben Davenport-Ray
+by Ben Davenport-Ray, Others
 
 Abstract
 --------
@@ -15,9 +12,13 @@ This SRFI defines mechanisms for creating procedures which change their behavior
 Issues
 ------
 
-- Should a global parameter for a default hierarchy exist?
+- Should a pre-defined default hierarchy exist?
+	- I think yes, and maybe accessible using a seperate import declaration. That way, maybe if the underlying Scheme has 
 - What should we actually call the parent-child relation?
+	- Subsumption sounds extra fancy, but it's a bit weird, since for me it sounds like if a predicate subsumes another it replaces it.
+	- Parent or Child is fine, but we don't want to take these concepts for ourselves, right?
 - When a predicate function is re-defined, should we re-define all relations as well?
+	- That may not be too bad, depending on how much we cache the relations.
 
 Rationale
 ---------
@@ -40,31 +41,31 @@ We say a predicate specializes another predicate when methods that are defined o
 the first predicate should be given higher priority than methods defined
 on the second.
 
-`(current-hierarchy) -> hierarchy?`
+##### `(current-hierarchy) -> hierarchy?`
 
-`(with-hierarchy <hierarchy> <body>) -> ...`
+##### `(with-hierarchy <hierarchy> <body>) -> ...`
 
 Evaluates the contents of `body` where the current hierarchy (as determined by `current-hierarchy`) is set to the given `hierarchy`.
 
-`(make-predicate-hierarchy) -> hierarchy?`
+##### `(make-predicate-hierarchy) -> hierarchy?`
 
 Create a new predicate hierarchy. 
 
-`(derive! <pred> <parent-pred> [<hierarchy>])`
+##### `(derive! <pred> <parent-pred> [<hierarchy>])`
 
 Ensure that _pred_ is registered to specialize _subpred_. It is an error if _pred_ already specializes _subpred_.
 
-`(derived? <pred> <other> [<hierarchy>]) -> boolean?`
+##### `(derived? <pred> <other> [<hierarchy>]) -> boolean?`
 
 Returns `#t` if _pred_ subsumes _other_, and `#f` otherwise.
 
-`(derivations <pred> [<hierarchy>]) -> list?`
+##### `(derivations <pred> [<hierarchy>]) -> list?`
 
 Returns a list of all predicates that have been registered to be subsumed in _pred_. If no subsumptions of _pred_ are registered, the empty list is returned.
 
 #### Syntax
 
-`(define-subsume ((<name> ... <subsumed>) ...args) ...body)`
+##### `(define-subsume ((<name> ... <subsumed>) ...args) ...body)`
 
 Creates a procedure with the argument list _args_ and the body _body_,
 binds it to _name_, and establishes that the newly defined procedure
@@ -78,37 +79,39 @@ as subsuming the new definition as well.
 
 ### Generic procedures
 
-`(make-generic <symbol> [<hierarchy>]) -> generic?`
+##### `(make-generic <symbol> [<hierarchy>]) -> generic?`
 
 Define a new generic function with the name _symbol_. If no hierarchy is given, then the return value of `(current-hierarchy)` is used. 
 
-`(generic? <object>) -> boolean?`
+##### `(generic? <object>) -> boolean?`
 
 Returns `#t` if the object is a generic function, and `#f` otherwise.
 
-`(generic-apply <generic> <list-of-args>) -> ...`
+##### `(generic-apply <generic> <list-of-args>) -> ...`
 
 Like `apply`, but calls a `generic` instead.
 
-`(generic-specialized-on? <generic> <object>...) -> boolean?`
+##### `(generic-specialized-on? <generic> <object>...) -> boolean?`
 
 Returns `#t` if the generic function has an explicit specialization for the objects, and `#f` otherwise.
 
-`(generic-has-specialization? <generic> <predicate>...) -> boolean?`
+##### `(generic-has-specialization? <generic> <predicate>...) -> boolean?`
 
 Returns `#t` if the generic function has an explicit specialization that specializes using the specific predicates, and `#f` otherwise.
 
-`generic-add-method! <generic> <predicates> <body>`
+##### `generic-add-method! <generic> <predicates> <body>`
 
 #### Syntax
 
-`(define-generic <name> [<hierarchy>])`
+##### `(define-generic <name> [<hierarchy>])`
 
 Defines a new generic function with the name and using the given hierarchy. 
 
-`(define-method (name parameters...) body ...)`
+##### `(define-method (name parameters...) body ...)`
 
-Defines a new specialization for the generic function `name`.
+Defines a new specialization for the generic function `name`. Each parameter may have a specializer if the 
+
+## Interaction with other SRFIs
 
 Examples
 --------
@@ -117,14 +120,11 @@ Examples
 ;; elt - retrieve an object from a container by integer index
 (define-generic elt)
 
-(define-method (elt (list? l) idx) 
-  (list-ref l idx))
-
-(define-method (elt (vector? v) idx) 
-  (vector-ref v idx))
-
-(define-method (elt (bytevector? bv) idx) 
-  (bytevector-u8-ref bv idx))
+(define-method (elt (list? l) idx) (list-ref l idx))
+(define-method (elt (vector? v) idx) (vector-ref v idx))
+(define-method (elt (bytevector? bv) idx) (bytevector-u8-ref bv idx))
 ```
+
+
 
 

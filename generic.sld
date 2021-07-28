@@ -1,5 +1,5 @@
 
-(define-library (lazr generic)
+(define-library (generic)
 
   (export make-generic
           generic?

@@ -1,5 +1,5 @@
 
-(define-library (types)
+(define-library (generic hierarchy)
   (export predicate-specialize! 
           predicate-specializes?
           object?)
