@@ -14,12 +14,16 @@ Issues
 
 - Should a pre-defined default hierarchy exist?
 	- I think it might be a good idea, if we can agree on it. If not, we don't have to provide it.
-	- Seperate hierarchy instances may help this problem of agreeing on hierarchies. If you don't like a particular hierarchy, you are free to define your own, but you have to do some of the work.
+	- Seperate hierarchy instances may help this problem of agreeing on hierarchies. If you don't like a particular hierarchy, you are free to define your own. Copying branches of the hierarchy should be easy with the right introspection primitives.
+
+
 - What should we actually call the parent-child relation?
 	- Subsumption sounds extra fancy, but it's a bit weird, since for me it sounds like if a predicate subsumes another it replaces it.
 	- Parent or Child is fine, but we don't want to take these concepts for ourselves, right?
+
+
 - When a predicate function is re-defined, should we re-define all relations as well?
-	- That may not be too bad, depending on how much we cache the relations.
+	- Maybe, but probably with convenience syntax.
 
 Rationale
 ---------
