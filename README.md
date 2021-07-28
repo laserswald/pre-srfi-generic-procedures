@@ -10,7 +10,7 @@ Ben Davenport-Ray
 Abstract
 --------
 
-This SRFI defines mechanisms for creating procedures which change their behavior depending on one or more predicates. This allows for ad-hoc polymorphism based on type, a specific value, range of values, or any other constraint that can be expressed using a predicate.
+This SRFI defines mechanisms for creating procedures which change their behavior depending on the values of the parameters, distinguished by one or more predicates. This allows for ad-hoc polymorphism based on type, a specific value, range of values, or any other constraint that can be expressed using a predicate.
 
 Issues
 ------
@@ -22,9 +22,9 @@ Issues
 Rationale
 ---------
 
-One of the percieved issues with Scheme is it's inability to create generic algorithms that take a wide variety of data as arguments: for example, conceptually `list-ref`, `vector-ref`, and `string-ref` are the same concept, that of looking up a value in a datum by index.
+One of the percieved issues with Scheme is it's inability to create generic algorithms that take a wide variety of data as arguments: for example, conceptually `list-ref`, `vector-ref`, and `string-ref` are the same concept, that of looking up a value in a datum by index. 
 
-The author makes no claims about the rationality of this draft.
+_The author makes no claims about the rationality of this draft._
 
 Specification
 -------------
@@ -40,7 +40,9 @@ We say a predicate specializes another predicate when methods that are defined o
 the first predicate should be given higher priority than methods defined
 on the second.
 
-`make-predicate-hierarchy`
+`make-predicate-hierarchy -> hierarchy?`
+
+Create a new predicate hierarchy. 
 
 `derive! <pred> <parent-pred> [<hierarchy>]`
 
@@ -76,11 +78,13 @@ Define a new generic function with the name _symbol_. If no hierarchy is given, 
 
 Returns `#t` if the object is a generic function, and `#f` otherwise.
 
-`generic-specialized-on? <generic> <predicate>...`
+`generic-specialized-on? <generic> <object>...`
+
+Returns `#t` if the generic function has an explicit specialization for the objects, and `#f` otherwise.
 
 `generic-has-specialization? <generic> <predicate>...`
 
-`generic-add-method! <generic> <predicates>`
+`generic-add-method! <generic> <predicates> <body>`
 
 Example
 -------
