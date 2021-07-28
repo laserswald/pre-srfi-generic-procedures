@@ -78,6 +78,16 @@ as subsuming the new definition as well.
 
 ### Methods
 
+##### `(make-method [<hierarchy>] <predicates> <body>) -> method?`
+
+> What is a good order here? 
+
+##### `(method-hierarchy <method>) -> hierarchy?`
+
+##### `(method-specializers <method>) -> list?`
+
+##### `(method-body <method>) -> procedure?`
+
 ### Generic procedures
 
 ##### `(make-generic <symbol> [<hierarchy>]) -> generic?`
@@ -100,7 +110,7 @@ Returns `#t` if the generic function has an explicit specialization for the obje
 
 Returns `#t` if the generic function has an explicit specialization that specializes using the specific predicates, and `#f` otherwise.
 
-##### `generic-add-method! <generic> <predicates> <body>`
+##### `(generic-add-method! <generic> <predicates> <body>)`
 
 #### Syntax
 
