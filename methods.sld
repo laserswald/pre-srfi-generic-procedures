@@ -12,7 +12,7 @@
           method-resolution<?)
 
   (import (scheme base)
-          (types))
+          (hierarchy))
 
   (begin
    (define-record-type <method>

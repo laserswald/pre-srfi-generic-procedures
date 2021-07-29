@@ -1,5 +1,5 @@
 
-(define-library (generic hierarchy)
+(define-library (hierarchy)
   (export predicate-specialize! 
           predicate-specializes?
           object?)
@@ -10,5 +10,5 @@
           (scheme set)
           (scheme list)
           (srfi 26))
-  (include "types.scm"))
+  (include "hierarchy.scm"))
 

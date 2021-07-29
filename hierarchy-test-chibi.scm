@@ -2,7 +2,9 @@
 (import (scheme base)
         (scheme load)
         (chibi test)
-        (types))
+        (hierarchy))
+
+(define (object? obj) #t)
 
 (test-group "add predicate specializations"
   (begin

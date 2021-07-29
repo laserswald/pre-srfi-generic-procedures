@@ -1,11 +1,18 @@
 ;;;
 ;;; An entry in the predicate ordering.
 ;;;
-(define-record-type <hierarchy>
-  (make-hierarchy predicate specializations)
-  hierarchy?
-  (predicate hierarchy-predicate)
-  (specializations hierarchy-specializations hierarchy-set-specializations!))
+(define-record-type <hierarchy-entry>
+  (%make-hierarchy-entry predicate specializations)
+  hierarchy-entry?
+  ;; procedure?
+  (predicate hierarchy-entry-predicate) 
+  ;; set?
+  (specializations hierarchy-entry-specializations
+                   hierarchy-entry-set-specializations!))
+
+(define (hierarchy-entry predicate . specializations)
+  (%make-hierarchy-entry predicate
+                         (list->set default-comparator specializations)))
 
 (define (display-order hierarchy)
   (set-for-each (lambda (sub)
@@ -15,30 +22,39 @@
                 (hierarchy-specializations hierarchy))
   (newline))
 
-(define (hierarchy-add-specialization! hierarchy sub)
-  (hierarchy-set-specializations!
-   hierarchy
-   (set-adjoin (hierarchy-specializations hierarchy) sub)))
+(define (hierarchy-entry-add-specialization! entry sub)
+  (hierarchy-entry-set-specializations!
+   entry
+   (set-adjoin (hierarchy-entry-specializations entry) sub)))
+
+(define-record-type <hierarchy>
+  (%make-hierarchy entries)
+  hierarchy?
+  (entries hierarchy-entries hierarchy-set-entries!))
+
+(define (make-hierarchy)
+  (%make-hierarchy (mapping default-comparator)))
 
 ;;;
 ;;; The global predicate specialization registry.
 ;;;
-(define *predicate-ordering* 
-  (mapping (make-default-comparator)))
+(define current-hierarchy (make-parameter (make-hierarchy))))
 
-(define (display-ordering)
+(define (display-current-hierarchy)
   (mapping-for-each (lambda (k v)
                       (display k)
                       (newline)
                       (display-order v))
-                    *predicate-ordering*))
-                               
+                    (hierarchy-entries (current-hierarchy)))
 
 ;;;
 ;;; Look up the ordering for a predicate in the global ordering.
 ;;;
-(define (predicate-ordering-ref predicate)
-  (mapping-ref *predicate-ordering* predicate))
+(define hierarchy-ref
+  (case-lambda 
+   ((p) (hierarchy-ref (current-hierarchy) p))
+   ((p hier)
+    (mapping-ref (hierarchy-entries hier) p))))
 
 (define (predicate-ordering-adjoin! hierarchy)
   (set! *predicate-ordering*
@@ -51,10 +67,6 @@
 ;;;
 (define (predicate-ordered? predicate)
   (mapping-contains? *predicate-ordering* predicate))
-
-(define (make-predicate-ordering predicate children)
-  (make-new-hierarchy predicate
-                            (list->set (make-default-comparator) children)))
 
 (define (object? obj) #t)
 

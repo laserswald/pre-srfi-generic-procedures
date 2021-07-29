@@ -2,7 +2,7 @@
         (scheme load)
         (chibi test)
         (methods)
-        (types))
+        (hierarchy))
 
 (define silly-method
   (make-method (list list?) (lambda (x) (display x))))

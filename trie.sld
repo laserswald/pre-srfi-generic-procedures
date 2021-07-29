@@ -3,12 +3,13 @@
 
 (export make-trie
         trie
+        trie?
         trie-empty?
         trie-ref
         trie-insert!)
 
 (import (scheme base)
-        (scheme mapping hash))
+        (srfi 146 hash))
 
 (begin
 
@@ -39,16 +40,19 @@
 (define (trie-node-insert! node comparator path value)
   (if (null? path)
     (if (eqv? (trie-node-value node) #f)
-      (trie-node-set-value! node)
+      (trie-node-set-value! node value)
       (error "trie-node-insert!: already an entry" value))
-    (unless (trie-node-has-child? node path)
-      (hashmap-insert! (trie-node-children node)
+    (begin
+      (unless (trie-node-has-child? node path)
+        (trie-node-set-children! 
+         node
+         (hashmap-set! (trie-node-children node)
                        (car path)
-                       (make-trie-node (car path) #f (make-hashmap comparator))))
-    (trie-node-insert! (trie-node-child node path)
-                       comparator
-                       (cdr path)
-                       value)))
+                       (make-trie-node (car path) #f (hashmap comparator)))))
+      (trie-node-insert! (trie-node-child node path)
+                         comparator
+                         (cdr path)
+                         value))))
 
 (define-record-type <trie>
   (make-trie comparator root)
@@ -57,7 +61,7 @@
   (root trie-root trie-set-root!))
 
 (define (trie comparator)
-  (make-trie comparator (make-trie-node '() #f (make-hashmap comparator))))
+  (make-trie comparator (make-trie-node '() #f (hashmap comparator))))
 
 (define (trie-empty? trie)
   (trie-node-empty? (trie-root trie)))
