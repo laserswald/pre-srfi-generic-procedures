@@ -6,6 +6,7 @@
 (define next-method
   (make-parameter #f))
 
+
 ;;;
 ;;; Generic procedures.
 ;;;
@@ -21,7 +22,7 @@
          (procedure? (cddar args))))
 
   (let ((name name)
-        (methods '()))
+        (methods (make-trie method-comparator)))
 
     (define (insert-method predicates args)
       (let ((method (make-method predicates args)))
