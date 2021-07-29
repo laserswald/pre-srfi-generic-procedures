@@ -1,11 +1,13 @@
 
-(define (insert-on pred x l)
-  (let-values ((before after) (span pred l))
-    (append before (list x) after)))
+;;; The list of other methods that can be 
+(define next-methods (make-parameter #f))
 
-(define next-method
-  (make-parameter #f))
-
+(define (call-next-method . args)
+  (let ((nms (next-methods)))
+    (if (not nms)
+      (error "call-next-method: not within a method context" args)
+      (parameterize ((next-methods (cdr nms)))
+        (apply (car nms) args))))))
 
 ;;;
 ;;; Generic procedures.
@@ -29,12 +31,13 @@
         (set! methods (insert-after (cut method-resolution<? <> method)
                                     method
                                     methods))))
+    
+    (define (select-applicable-methods predicates args))
 
     (lambda args
       (if (is-add-method-directive? args)
         (insert-method (cdar args) (cddar args))
-        (let (())
-         (parameterize (())
+        (parameterize (())
           (apply (find-matching-method methods args) args)))))))
 
 (define (generic-add! g preds proc)
@@ -47,15 +50,9 @@
 
 (define-syntax define-method
   (syntax-rules ()
-    ((define-method (name (param type) ...) . body)
+    ((define-method (name (type param) ...) . body)
      (generic-add! name
                    (list type ...)
                    (lambda (param ...)
                      body)))))
-
-
-(define (object? obj) #t)
-
-(define-generic initialize)
-(define-method (initialize (obj object?)) obj)
 
