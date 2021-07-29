@@ -55,7 +55,7 @@ A hierarchy is a disjoint type.
 
 Returns `#t` if the object is a predicate hierarchy, `#f` otherwise.
 
-##### `(make-predicate-hierarchy) -> hierarchy?`
+##### `(make-hierarchy) -> hierarchy?`
 
 Create a new predicate hierarchy. 
 
