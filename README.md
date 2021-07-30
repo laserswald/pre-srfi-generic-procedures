@@ -53,15 +53,17 @@ also comes with a cost: which predicate should be preferred over another?
 We solve this problem by adding a new object, a predicate hierarchy,
 to solve the ambiguity. Predicates may be registered with the hierarchy
 in order to clarify which method should be preferred if a value matches
-the constraints of more than one method.
+the constraints of more than one method. For convenience, there is a 
+parameter defined that will point to a default hierarchy, and most operations
+involving hierarchies will default to this one if a specific hierarchy is not
+specified.
 
 This stands in contrast to Common Lisp's CLOS, which not only define
 the mechanisms for generic operations, but also a system of classes that
-define an aggregate types. However, Scheme already has a way to define
+define aggregate types. However, R7RS already has a way to define
 new aggregates using `define-record-type`, and such a system of classes
 is not, strictly speaking, necessary to gain utility from the generic
-function idea. Omitting classes in this SRFI can therefore be seen as
-providing mechanism, but not policy.
+function idea. Adding the functionality for classes is left to a future SRFI.
 
 ### Terminology
 
@@ -129,6 +131,10 @@ If the hierarchy is not specified, it defaults to the value
 returned from `(current-hierarchy)`.  It is an error to use predicates
 for specialization that have not been registered in the given hierarchy.
 
+##### `(method? <object>) -> boolean?`
+
+Returns `#t` if the object is a method, and `#f` otherwise.
+
 ##### `(method-hierarchy <method>) -> hierarchy?`
 
 Returns the hierarchy that the method was defined under.
@@ -144,8 +150,6 @@ Returns the procedure that will be called when the method is matched.
 ##### `(method-resolution<? <method> ...) -> boolean?`
 
 ### Generic procedures
-
-
 
 ##### `(make-generic <symbol> [<hierarchy>]) -> generic?`
 
