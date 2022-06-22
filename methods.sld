@@ -38,7 +38,7 @@
          (let ((current-this (car this-predicates))
                (current-that (car that-predicates)))
            (cond ((or (equal? current-this current-that)
-                      (predicate-specializes? current-this current-that))
+                      (is-a? current-that current-this))
                   (loop (cdr this-predicates)
                         (cdr that-predicates)))
                  (else #f))))))))

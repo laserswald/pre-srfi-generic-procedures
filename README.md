@@ -33,7 +33,7 @@ Rationale
 ---------
 
 One of the percieved issues with Scheme is it's lack of built-in
-polymorphic procedurs; that is, the ability to call a single function
+polymorphic procedures; that is, the ability to call a single function
 that symbolizes a single operation on a wide variety of types, with
 differing effects depending on the value in question.
 
@@ -65,20 +65,22 @@ new aggregates using `define-record-type`, and such a system of classes
 is not, strictly speaking, necessary to gain utility from the generic
 function idea. Adding the functionality for classes is left to a future SRFI.
 
+_The author makes no claims about the rationality of this draft._
+
 ### Terminology
 
 We say a predicate specializes another predicate when methods that are
 defined on the first predicate should be given higher priority than
-methods defined on the second.
-
-_The author makes no claims about the rationality of this draft._
+methods defined on the second. 
 
 Specification
 -------------
 
 ### Hierarchies
 
-A hierarchy is a disjoint type.
+A hierarchy is a disjoint type, as if it were created using `define-record-type`.
+It symbolizes the concept of dividing the domain of values that can be passed into
+generic functions
 
 #### Constructors and recognizers
 
@@ -92,19 +94,26 @@ Returns `#t` if the object is a predicate hierarchy, `#f` otherwise.
 
 #### Hierarchy operations
 
-For each of these operations that take an optional hierarchy, if the hierarchy is not specified, then the hierarchy affected is the value returned by `(current-hierarchy)`.
+For each of these operations that take an optional hierarchy, if the
+hierarchy is not specified, then the hierarchy affected is the value
+returned by `(current-hierarchy)`.
 
 ##### `(derive! <pred> <parent-pred> [<hierarchy>])`
 
-Ensure that _pred_ is registered to specialize _subpred_. It is an error if _pred_ already specializes _subpred_.
+Ensure that _pred_ is registered to specialize _subpred_. It is an error
+if _pred_ already specializes _subpred_.
 
-##### `(derived? <pred> <other> [<hierarchy>]) -> boolean?`
+##### `(is-a? <pred> <other> [<hierarchy>]) -> boolean?`
 
 Returns `#t` if _pred_ subsumes _other_, and `#f` otherwise.
 
-##### `(derivations <pred> [<hierarchy>]) -> list?`
+##### `(decendants <pred> [<hierarchy>]) -> list?`
 
-Returns a list of all predicates that have been registered to be subsumed in _pred_. If no subsumptions of _pred_ are registered, the empty list is returned.
+Returns a list of all predicates that have been registered to be subsumed
+in _pred_. If no subsumptions of _pred_ are registered, the empty list
+is returned.
+
+##### `(ancestors <pred> [<hierarchy>]) -> list?`
 
 #### The current hierarchy
 
@@ -114,7 +123,8 @@ A parameter that holds the current hierarchy.
 
 ##### `(with-hierarchy <hierarchy> <body>) -> ...`
 
-Evaluates the contents of `body` where the current hierarchy (as determined by `current-hierarchy`) is set to the given `hierarchy`.
+Evaluates the contents of `body` where the current hierarchy (as
+determined by `current-hierarchy`) is set to the given `hierarchy`.
 
 ### Methods
 
@@ -151,29 +161,42 @@ Returns the procedure that will be called when the method is matched.
 
 ### Generic procedures
 
+Generic procedures are a collection of methods, a symbol for ease of
+debugging, and an associated hierarchy that allows an order for the
+methods in question.
+
+Generic procedures are disjoint from all types except for possibly
+procedures. The recognizer `generic?` can be used to distinguish
+generics from other procedures.
+
+It is an error if any of the methods added to a generic procedure are
+specialized on predicates which are not members of the generic procedure's
+hierarchy.
+
 ##### `(make-generic <symbol> [<hierarchy>]) -> generic?`
 
-Define a new generic function with the name _symbol_. If no hierarchy is given, then the return value of `(current-hierarchy)` is used. 
+Define a new generic function with the name _symbol_. If no hierarchy
+is given, then the return value of `(current-hierarchy)` is used.
 
 ##### `(generic? <object>) -> boolean?`
 
 Returns `#t` if the object is a generic function, and `#f` otherwise.
 
-##### `(generic-specialized-on? <generic> <object>...) -> boolean?`
-
-Returns `#t` if the generic function has an explicit specialization for the objects, and `#f` otherwise.
-
-##### `(generic-has-specialization? <generic> <predicate>...) -> boolean?`
-
-Returns `#t` if the generic function has an explicit specialization that specializes using the specific predicates, and `#f` otherwise.
-
 ##### `(generic-add-method! <generic> <method>)`
 
 Adds a new method to the generic.
 
-##### `(generic-remove-method! <generic> <method>)`
+##### `(generic-specialized-on? <generic> <object>...) -> boolean?`
 
-Removes the method from the generic. If the method was not registered with the generic, this function does nothing.
+Returns `#t` if the generic function has an explicit specialization for
+the objects, and `#f` otherwise.
+
+##### `(generic-has-specialization? <generic> <predicate>...) -> boolean?`
+
+Returns `#t` if the generic function has an explicit specialization that
+specializes using the specific predicates, and `#f` otherwise.
+
+##### `(generic-seal! )`
 
 #### Syntax
 
@@ -190,6 +213,12 @@ Defines a new specialization for the generic function `name`. Each parameter may
 ##### `(object? . xs) -> boolean?` 
 
 Returns `#t` if an object is a datum. Useful for having a "base" type in a predicate hierarchy.
+
+`object?` could be defined by
+
+```scheme
+(define (object? . xs) #t)
+```
 
 ## Interaction with other SRFIs
 

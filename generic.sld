@@ -1,14 +1,25 @@
+ (define-library (generic)
 
-(define-library (generic)
+  (export define-generic 
+          define-method
 
-  (export make-generic
-          generic?
-          define-generic
-          define-method)
+          make-generic
+          generic-add!
+          generic-methods
+          generic-metadata
+          display-generic-metadata
+          
+          test-method-storage
+          method-storage-lookup)
 
   (import (scheme base)
-          (scheme mapping hash)
-          (lazr types))
+          (scheme write)
+          (scheme cxr)
+          (scheme show)
+          (scheme sort)
+          (srfi 229)
+          (srfi 64)
+          (hierarchy)
+          (methods))
 
-  (include "method.scm")
   (include "generic.scm"))

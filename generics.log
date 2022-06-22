@@ -1,0 +1,115 @@
+%%%% Starting test generics
+Group begin: generics
+Group begin: method-storage
+Test begin:
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Test begin:
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Test begin:
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Test begin:
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Test begin:
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Test begin:
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Group end: method-storage
+Group begin: derive
+Test begin:
+  test-name: "list is an object"
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Test begin:
+  test-name: "null is a list"
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Test begin:
+  test-name: "null is an object"
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Test begin:
+  test-name: "pairs are lists"
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Test begin:
+  test-name: "pairs are objects"
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Group end: derive
+Group begin: single-argument
+Test begin:
+  test-name: "vectors should be considered sequences"
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Test begin:
+  test-name: "lists should be considered sequences"
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Group end: single-argument
+Group begin: two-arguments
+Test begin:
+  test-name: (join 1 2)
+Test end:
+  result-kind: pass
+  actual-value: 3
+  expected-value: 3
+Test begin:
+  test-name: (join "alpha" "beta")
+Test end:
+  result-kind: pass
+  actual-value: "alphabeta"
+  expected-value: "alphabeta"
+Group end: two-arguments
+Group begin: overriding
+Test begin:
+  test-name: (join* 1 2)
+Test end:
+  result-kind: pass
+  actual-value: 4
+  expected-value: 4
+Test begin:
+  test-name: (join* 1.5 1.5)
+Test end:
+  result-kind: pass
+  actual-value: 3.0
+  expected-value: 3.0
+Group end: overriding
+Test begin:
+Test end:
+  result-kind: pass
+  actual-value: #t
+  expected-value: #t
+Group end: generics
+# of expected passes      18
