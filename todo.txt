@@ -1,0 +1,6 @@
+(A) Add default predicate to hierarchy
+Add default predicate to unspecified argument types
+Add more tests
+Consolidate seperate libraries into single library
+Document everything
+File a bug report to chibi scheme for tagged procedures not accepting arbitrary argument lists
